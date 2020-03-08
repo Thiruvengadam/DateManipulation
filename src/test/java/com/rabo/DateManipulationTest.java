@@ -12,53 +12,71 @@ public class DateManipulationTest {
 
     @Test
     public void testInputStartTimeEndTimeAsEmpty() {
-        String startDate = "";
-        String endDate = "";
-        assertThrows(InvalidDateException.class, () -> dateManipulation.count(startDate, endDate));
+        String startTime = "";
+        String endTime = "";
+        assertThrows(InvalidDateException.class, () -> dateManipulation.count(startTime, endTime));
     }
 
     @Test
     public void testInputStartTimeEndTimeAsNull() {
-        String startDate = null;
-        String endDate = null;
-        assertThrows(InvalidDateException.class, () -> dateManipulation.count(startDate, endDate));
+        String startTime = null;
+        String endTime = null;
+        assertThrows(InvalidDateException.class, () -> dateManipulation.count(startTime, endTime));
     }
 
     @Test
     public void testInvalidStartTimeAndEndTime() {
-        String startDate = "25:00:00";
-        String endDate = "13:00:00";
-        assertThrows(InvalidDateException.class, () -> dateManipulation.count(startDate, endDate));
+        String startTime = "25:00:00";
+        String endTime = "13:00:00";
+        assertThrows(InvalidDateException.class, () -> dateManipulation.count(startTime, endTime));
     }
 
     @Test
     public void testStartTimeAfterEndTime() {
-        String startDate = "18:00:00";
-        String endDate = "17:00:00";
-        assertThrows(InvalidDateException.class, () -> dateManipulation.count(startDate, endDate));
+        String startTime = "18:00:00";
+        String endTime = "17:00:00";
+        assertThrows(InvalidDateException.class, () -> dateManipulation.count(startTime, endTime));
     }
 
     @Test
     public void testInvalidStartAndEndTime() {
-        String startDate = "abc";
-        String endDate = "abc";
-        assertThrows(InvalidDateException.class, () -> dateManipulation.count(startDate, endDate));
+        String startTime = "abc";
+        String endTime = "abc";
+        assertThrows(InvalidDateException.class, () -> dateManipulation.count(startTime, endTime));
     }
 
     @Test
     public void testForValidDateAndValidateCount() throws InvalidDateException {
-        String startDate = "12:00:00";
-        String endDate = "13:00:00";
-        assertEquals(4, dateManipulation.count(startDate, endDate));
+        String startTime = "12:00:00";
+        String endTime = "13:00:00";
+        assertEquals(4, dateManipulation.count(startTime, endTime));
     }
 
     @Test
     public void testValidateCountForSimilarHours() throws InvalidDateException {
-        String startDate = "11:00:00";
-        String endDate = "12:00:00";
-        assertEquals(1, dateManipulation.count(startDate, endDate));
-        endDate = "14:00:00";
-        assertEquals(9, dateManipulation.count(startDate, endDate));
+        String startTime = "11:00:00";
+        String endTime = "12:00:00";
+        assertEquals(1, dateManipulation.count(startTime, endTime));
+        endTime = "14:00:00";
+        assertEquals(9, dateManipulation.count(startTime, endTime));
+    }
+
+    @Test
+    public void testForForTimeBetweenDifferentMinutes() throws InvalidDateException {
+        String startTime = "12:12:00";
+        String endTime = "12:21:20";
+        assertEquals(3, dateManipulation.count(startTime, endTime));
+        endTime = "12:21:21";
+        assertEquals(4, dateManipulation.count(startTime, endTime));
+    }
+
+    @Test
+    public void testForForTimeBetweenDifferentSeconds() throws InvalidDateException {
+        String startTime = "12:12:12";
+        String endTime = "12:12:20";
+        assertEquals(1, dateManipulation.count(startTime, endTime));
+        endTime = "12:21:21";
+        assertEquals(4, dateManipulation.count(startTime, endTime));
     }
 
 }
