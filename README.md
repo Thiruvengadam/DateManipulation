@@ -1,4 +1,4 @@
-# DateManipulation
+# TimeManipulation
 Program accepts 2 arguments Start time and end time in below format
 HH:MM:SS
 
