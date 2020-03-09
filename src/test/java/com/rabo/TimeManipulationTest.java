@@ -47,27 +47,23 @@ public class TimeManipulationTest {
 
     @Test
     public void testForValidDateAndValidateCount() throws InvalidDateException {
-        String startTime = "12:00:00";
-        String endTime = "13:00:00";
-        assertEquals(4, timeManipulation.count(startTime, endTime));
+        String startTime = "16:15:00";
+        String endTime = "17:00:00";
+        assertEquals(2, timeManipulation.count(startTime, endTime));
     }
 
     @Test
     public void testValidateCountForSimilarHours() throws InvalidDateException {
         String startTime = "11:00:00";
         String endTime = "12:00:00";
-        assertEquals(1, timeManipulation.count(startTime, endTime));
-        endTime = "14:00:00";
-        assertEquals(9, timeManipulation.count(startTime, endTime));
+        assertEquals(87, timeManipulation.count(startTime, endTime));
     }
 
     @Test
     public void testForForTimeBetweenDifferentMinutes() throws InvalidDateException {
         String startTime = "12:12:00";
         String endTime = "12:21:20";
-        assertEquals(3, timeManipulation.count(startTime, endTime));
-        endTime = "12:21:21";
-        assertEquals(4, timeManipulation.count(startTime, endTime));
+        assertEquals(6, timeManipulation.count(startTime, endTime));
     }
 
     @Test
@@ -76,7 +72,7 @@ public class TimeManipulationTest {
         String endTime = "12:12:20";
         assertEquals(1, timeManipulation.count(startTime, endTime));
         endTime = "12:21:21";
-        assertEquals(4, timeManipulation.count(startTime, endTime));
+        assertEquals(5, timeManipulation.count(startTime, endTime));
     }
 
 }

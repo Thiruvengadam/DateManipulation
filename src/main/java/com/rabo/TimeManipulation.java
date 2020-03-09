@@ -5,8 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -15,6 +17,11 @@ public class TimeManipulation {
     private static final Logger LOG = LoggerFactory.getLogger(TimeManipulation.class);
     private static LocalTime startingTime;
     private static LocalTime endingTime;
+
+    public static void main(String argsp[]) throws InvalidDateException {
+        TimeManipulation timeManipulation = new TimeManipulation();
+        System.out.println(timeManipulation.count("16:15:00", "17:00:00"));
+    }
 
     /**
      * Count the number of instances of similar digits between given time
@@ -30,9 +37,13 @@ public class TimeManipulation {
 
             //get time between the given time in seconds and filter out the similar digits & count the occurrence
             count = (int)Stream.iterate(startingTime, time -> time.plusSeconds(1))
-                                .limit(ChronoUnit.SECONDS.between(startingTime, endingTime)+1)
-                                .filter(timeWithSimilarDigits())
-                                //.peek(System.out::println) //uncomment to print the resulting times
+                                .limit(ChronoUnit.SECONDS.between(startingTime, endingTime))
+                                .filter(time -> {
+                                    String timeWithSeconds = time.getSecond() == 0 ?
+                                            time.toString() + ":00" : time.toString();
+                                    return timeWithSeconds.chars().distinct().count() == 3;//including the ':' character
+                                })
+                                .peek(System.out::println) //uncomment to print the resulting times
                                 .count();
 
         } catch (DateTimeParseException e) {
@@ -50,41 +61,12 @@ public class TimeManipulation {
             LOG.error("Please enter time in format(HH:MM:SS), Start time or End time is empty or null!!");
             throw new InvalidDateException("Please enter time in format(HH:MM:SS), Start time or End time is empty or null!!");
         }
-        startingTime = LocalTime.parse(startTime);
+        startingTime = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm:ss"));
         endingTime = LocalTime.parse(endTime);
         if(startingTime.isAfter(endingTime)) {
             LOG.error("Start time is after end time. Ensure start time is before end time");
             throw new InvalidDateException("Start time is after end time. Ensure start time is before end time");
         }
-    }
-
-    /**
-     * Filter matching digits of hour and minutes
-     *        ex: 12:12:12 && 12:12:00
-     * @return
-     */
-    private Predicate<LocalTime> timeWithSimilarDigits() {
-        return givenTime -> {
-            String hour = addZeroBefore(givenTime.getHour());
-            String firstDigit = String.valueOf(hour.charAt(0));
-            String secondDigit = String.valueOf(hour.charAt(1));
-            return containsChar(addZeroBefore(givenTime.getMinute()), firstDigit, secondDigit)
-                    && containsChar(addZeroBefore(givenTime.getSecond()), firstDigit, secondDigit);
-        };
-    }
-
-    private String addZeroBefore(int time) {
-        return (time < 10 ? "0" : "") + time;
-    }
-
-    private boolean containsChar(String time, String firstChar, String secChar) {
-        if(firstChar.equals(secChar)) {
-            if(time.contains(firstChar+secChar)){
-             return true;
-            }
-            return false;
-        }
-        return time.contains(firstChar) && time.contains(secChar);
     }
 
     private static boolean isBlank(String time) {
