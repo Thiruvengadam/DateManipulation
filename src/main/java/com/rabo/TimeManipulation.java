@@ -16,11 +16,6 @@ public class TimeManipulation {
     private static LocalTime startingTime;
     private static LocalTime endingTime;
 
-    public static void main(String argsp[]) throws InvalidDateException {
-        TimeManipulation timeManipulation = new TimeManipulation();
-        System.out.println(timeManipulation.count("16:15:00", "17:00:00"));
-    }
-
     /**
      * Count the number of instances of similar digits between given time
      * @param startTime
