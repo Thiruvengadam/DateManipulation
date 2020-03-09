@@ -8,8 +8,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class TimeManipulation {
@@ -43,7 +41,7 @@ public class TimeManipulation {
                                             time.toString() + ":00" : time.toString();
                                     return timeWithSeconds.chars().distinct().count() == 3;//including the ':' character
                                 })
-                                .peek(System.out::println) //uncomment to print the resulting times
+                                //.peek(System.out::println) //uncomment to print the resulting times
                                 .count();
 
         } catch (DateTimeParseException e) {
