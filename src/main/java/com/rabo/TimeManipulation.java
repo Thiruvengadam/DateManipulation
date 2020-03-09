@@ -10,9 +10,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class DateManipulation {
+public class TimeManipulation {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DateManipulation.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TimeManipulation.class);
     private static LocalTime startingTime;
     private static LocalTime endingTime;
 
@@ -38,9 +38,9 @@ public class DateManipulation {
         } catch (DateTimeParseException e) {
             throw new InvalidDateException("Unable to parse date. Please pass time in HH:MM:SS format"+e.getMessage());
         }
-        LOG.info("Start time: " + startTime);
-        LOG.info("End time: " + endTime);
-        LOG.info("Count of similar digits that occurs between the given time is " + count);
+        LOG.info("Start time: {}", startTime);
+        LOG.info("End time: {}", endTime);
+        LOG.info("Count of similar digits that occurs between the given time is {}", count);
 
         return count;
     }
